@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest==5.2.2
+coverage==4.5.4
+pyfakefs==3.6.1
