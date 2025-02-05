@@ -1,1 +1,4 @@
 jinja2==2.11.3
+
+# https://github.com/pallets/markupsafe/issues/282
+markupsafe==2.0.1

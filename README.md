@@ -30,11 +30,12 @@ class UserProfile(Base):
 ```
 Running:
 ```bash
-./savis.py -o diagram.er -e '*async*' /repo/project/
+./savis.py -o md -e '*async*' /repo/project/ > diagram.er
 eralchemy -i diagram.er -o diagram.png
 ```
 
 Gives
+
 ![ERD](/test/models.erd.png)
 
 raison d'être
