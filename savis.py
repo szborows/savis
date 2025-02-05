@@ -36,7 +36,7 @@ def is_primary_column_def(member):
     kws = member.value.keywords
     if not kws:
         return False
-    return [x.value.value for x in kws if x.arg == 'primary_key'][0]
+    return ([x.value.value for x in kws if x.arg == 'primary_key'] or [False])[0]
 
 
 def get_model_fields(node):
@@ -81,9 +81,10 @@ def find_models(node):
 
 
 def describe(model, output_format):
+    fields = list(get_model_fields(model))
     if output_format == 'human':
         print(model.name)
-        for entry in get_model_fields(model):
+        for entry in list(fields):
             print('\t', entry)
     else:
         template = (
@@ -92,14 +93,12 @@ def describe(model, output_format):
             '    {% if f.extra.primary %}*{% endif %}{{ f.name }} {label:"{{ f.data_type }}"}\n'
             '{% endfor %}\n\n'
         )
-
-        fields = list(get_model_fields(model))
         print(jinja2.Template(template).render(model_name=model.name, fields=fields))
-        foreign_keys = []
-        for f in fields:
-            if 'foreign' in f.extra:
-                foreign_keys.append((f.extra['foreign'], model.name))
-        return foreign_keys
+    foreign_keys = []
+    for f in fields:
+        if 'foreign' in f.extra:
+            foreign_keys.append((f.extra['foreign'], model.name))
+    return foreign_keys
 
 
 def describe_foreign_keys(fks, output_format):
